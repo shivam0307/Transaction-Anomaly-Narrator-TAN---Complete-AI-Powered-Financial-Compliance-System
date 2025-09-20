@@ -1,3 +1,5 @@
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tan14092025aiagent.streamlit.app/)
+
 # 🤖 Transaction Anomaly Narrator (TAN)
 
 TAN is an AI-powered tool to detect and explain anomalies in financial transactions. It uses a set of rules to flag suspicious activity and leverages a Large Language Model (LLM) to generate clear, human-readable narratives for each anomaly.
