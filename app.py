@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 import pandas as pd
 from src.data_loader import load_transactions
@@ -36,9 +37,15 @@ if uploaded_file is not None:
                     if not anomalies_df.empty:
                         # Generate narratives
                         narrator = NarrativeGenerator()
-                        anomalies_df['Narrative'] = anomalies_df.apply(
-                            lambda row: narrator.generate_narrative(row.to_dict()), axis=1
-                        )
+                        narratives = []
+                        progress_bar = st.progress(0, text="Generating narratives...")
+                        for i, row in enumerate(anomalies_df.to_dict('records')):
+                            narratives.append(narrator.generate_narrative(row))
+                            time.sleep(1) # Wait for 1 second between each API call
+                            progress_bar.progress((i + 1) / len(anomalies_df), text=f"Generating narrative {i+1}/{len(anomalies_df)}")
+                        anomalies_df['Narrative'] = narratives
+                        progress_bar.empty() # Remove the progress bar when done
+    
                         st.session_state.processed_data = anomalies_df
                     else:
                         st.session_state.processed_data = pd.DataFrame() # Empty df if no anomalies
